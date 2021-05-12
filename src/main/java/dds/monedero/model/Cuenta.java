@@ -87,8 +87,6 @@ public class Cuenta {
 
 
 /*
-*El metodo agregar movimiento deberia recibir un movimiento como parametro en vez de crearlo para agregarlo,
-sino estaria usando la clase Movimiento unicamente como una estructura
 
 *En getMontoExtraidoA(1) se puede simplificar esa logica del filter abstrayendo la funcion booleana (Long Method?)
 
