@@ -48,6 +48,7 @@ public class Movimiento {
     cuenta.agregarMovimiento(fecha, monto, esDeposito);
   }
 
+
   public double calcularValor(Cuenta cuenta) {
     if (esDeposito) {
       return cuenta.getSaldo() + getMonto();
@@ -56,3 +57,15 @@ public class Movimiento {
     }
   }
 }
+
+  /*
+  *La clase en si es un code smell porque esta compuesta casi en si totalidad
+  por getters (Only accesors)
+
+  *Este caso de isExtraccion() es un metodo sin ninguna razon de existir, ya que para saber
+  si es un deposito se niega isDeposito() (Codigo repetido)
+
+  *Los metodos agregarA(1) y calcularValor() estan cometiendo el error de que basicamente
+  estan haciendo algo que no es de su responsabilidad, es un metodo que deberia estar en
+  el objeto cuenta (Misplaced method)
+   */

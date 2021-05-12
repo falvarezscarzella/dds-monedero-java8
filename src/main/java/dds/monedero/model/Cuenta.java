@@ -45,7 +45,7 @@ public class Cuenta {
     if (getSaldo() - cuanto < 0) {
       throw new SaldoMenorException("No puede sacar mas de " + getSaldo() + " $");
     }
-    double montoExtraidoHoy = getMontoExtraidoA(LocalDate.now());
+    double montoExtraidoHoy = getMontoExtraidoEn(LocalDate.now());
     double limite = 1000 - montoExtraidoHoy;
     if (cuanto > limite) {
       throw new MaximoExtraccionDiarioException("No puede extraer mas de $ " + 1000
@@ -59,7 +59,7 @@ public class Cuenta {
     movimientos.add(movimiento);
   }
 
-  public double getMontoExtraidoA(LocalDate fecha) {
+  public double getMontoExtraidoEn(LocalDate fecha) {
     return getMovimientos().stream()
         .filter(movimiento -> !movimiento.isDeposito() && movimiento.getFecha().equals(fecha))
         .mapToDouble(Movimiento::getMonto)
@@ -79,3 +79,18 @@ public class Cuenta {
   }
 
 }
+
+
+/*
+*El metodo agregar movimiento deberia recibir un movimiento como parametro en vez de crearlo para agregarlo,
+sino estaria usando la clase Movimiento unicamente como una estructura
+
+*En getMontoExtraidoA(1) se puede simplificar esa logica del filter abstrayendo la funcion booleana (Long Method?)
+
+*En el metodo poner(1) y sacar(1) tambien se puede abtraer una parte de la logica de las validaciones
+en un metodo nuevo (Long method?)
+
+*setMovimientos(1) es incongruente pues no actualiza el saldo (Esto no se si es un smell pero si me parece feo)
+
+*El contructor de Cuenta() inicializa el saldo en 0 y el mismo atributo se inicializa tambien en 0, lo cual es redundante
+*/

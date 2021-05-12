@@ -7,35 +7,43 @@ import dds.monedero.exceptions.SaldoMenorException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MonederoTest {
   private Cuenta cuenta;
+  private final LocalDate fechaPasada = LocalDate.of(2020,3,16);
+  private final Movimiento movimientoPasado = new Movimiento(fechaPasada,300,true);
 
   @BeforeEach
-  void init() {
+  public void init() {
     cuenta = new Cuenta();
   }
 
   @Test
-  void Poner() {
+  public void PonerDineroEnUnaCuentaVacia() {
     cuenta.poner(1500);
+    assertEquals(1500,cuenta.getSaldo());
   }
 
   @Test
-  void PonerMontoNegativo() {
+  public void PonerMontoNegativo() {
     assertThrows(MontoNegativoException.class, () -> cuenta.poner(-1500));
   }
 
   @Test
-  void TresDepositos() {
+  public void SeHacenTresDepositosEnUnaCuentaVacia() {
     cuenta.poner(1500);
     cuenta.poner(456);
     cuenta.poner(1900);
+    assertEquals(3856,cuenta.getSaldo());
   }
 
   @Test
-  void MasDeTresDepositos() {
+  public void MasDeTresDepositos() {
     assertThrows(MaximaCantidadDepositosException.class, () -> {
           cuenta.poner(1500);
           cuenta.poner(456);
@@ -45,7 +53,14 @@ public class MonederoTest {
   }
 
   @Test
-  void ExtraerMasQueElSaldo() {
+  public void ExtraerDineroDeUnaCuentaDe1000(){
+    cuenta.poner(1000);
+    cuenta.sacar(100);
+    assertEquals(900,cuenta.getSaldo());
+  }
+
+  @Test
+  public void ExtraerMasQueElSaldo() {
     assertThrows(SaldoMenorException.class, () -> {
           cuenta.setSaldo(90);
           cuenta.sacar(1001);
@@ -63,6 +78,13 @@ public class MonederoTest {
   @Test
   public void ExtraerMontoNegativo() {
     assertThrows(MontoNegativoException.class, () -> cuenta.sacar(-500));
+  }
+
+  @Test
+  public void VerExtraccionDeUnaFecha(){
+    movimientoPasado.agregateA(cuenta);
+    cuenta.sacar(200);
+    assertEquals(200,cuenta.getMontoExtraidoEn(LocalDate.now()));
   }
 
 }
