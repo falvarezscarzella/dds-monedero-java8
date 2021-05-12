@@ -25,30 +25,16 @@ public class Cuenta {
   }
 
   public void poner(double cuanto) {
-    if (cuanto <= 0) {
-      throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
-    }
-
-    if (getMovimientos().stream().filter(movimiento -> movimiento.isDeposito()).count() >= 3) {
-      throw new MaximaCantidadDepositosException("Ya excedio los " + 3 + " depositos diarios");
-    }
+    verificarMontoNegativo(cuanto);
+    verificarDepositosDiarios();
     Movimiento deposito = new Movimiento(LocalDate.now(), cuanto, true);
     agregarMovimiento(deposito);
   }
 
   public void sacar(double cuanto) {
-    if (cuanto <= 0) {
-      throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
-    }
-    if (getSaldo() - cuanto < 0) {
-      throw new SaldoMenorException("No puede sacar mas de " + getSaldo() + " $");
-    }
-    double montoExtraidoHoy = getMontoExtraidoEn(LocalDate.now());
-    double limite = 1000 - montoExtraidoHoy;
-    if (cuanto > limite) {
-      throw new MaximoExtraccionDiarioException("No puede extraer mas de $ " + 1000
-          + " diarios, límite: " + limite);
-    }
+    verificarMontoNegativo(cuanto);
+    verificarExtraccionMasGrandeQueElSaldo(cuanto);
+    verificarLimiteDeExtraccion(cuanto);
     Movimiento extraccion = new Movimiento(LocalDate.now(), cuanto, false);
     agregarMovimiento(extraccion);
   }
@@ -63,6 +49,13 @@ public class Cuenta {
     if(movimiento.isDeposito()) saldo+= movimiento.getMonto();
     else saldo-= movimiento.getMonto();
   }
+
+  public long cantidadDepositosDeHoy(){
+    return getMovimientos().stream().
+        filter(movimiento -> movimiento.fueDepositado(LocalDate.now())).count();
+  }
+
+ // GETTERS Y SETTERS
 
   public double getMontoExtraidoEn(LocalDate fecha) {
     return getMovimientos().stream()
@@ -83,13 +76,37 @@ public class Cuenta {
     this.saldo = saldo;
   }
 
+  //METODOS DE VERIFICACION
+
+  public void verificarMontoNegativo(double monto){
+    if (monto <= 0) {
+      throw new MontoNegativoException(monto + ": el monto a ingresar debe ser un valor positivo");
+    }
+  }
+
+  public void verificarExtraccionMasGrandeQueElSaldo(double extraccion){
+    if (getSaldo() - extraccion < 0) {
+      throw new SaldoMenorException("No puede sacar mas de " + getSaldo() + " $");
+    }
+  }
+
+  public void verificarLimiteDeExtraccion(double extraccion){
+    double montoExtraidoHoy = getMontoExtraidoEn(LocalDate.now());
+    double limite = 1000 - montoExtraidoHoy;
+    if (extraccion > limite) {
+      throw new MaximoExtraccionDiarioException("No puede extraer mas de $ " + 1000
+          + " diarios, límite: " + limite);
+    }
+  }
+
+  public void verificarDepositosDiarios(){
+    if (cantidadDepositosDeHoy() >= 3) {
+      throw new MaximaCantidadDepositosException("Ya excedio los " + 3 + " depositos diarios");
+    }
+  }
 }
 
 
 /*
-
 *En getMontoExtraidoA(1) se puede simplificar esa logica del filter abstrayendo la funcion booleana (Long Method?)
-
-*En el metodo poner(1) y sacar(1) tambien se puede abtraer una parte de la logica de las validaciones
-en un metodo nuevo (Long method?)
 */
