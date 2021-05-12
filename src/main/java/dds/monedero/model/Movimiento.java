@@ -28,7 +28,7 @@ public class Movimiento {
   }
 
   public boolean fueExtraido(LocalDate fecha) {
-    return isExtraccion() && esDeLaFecha(fecha);
+    return !isDeposito() && esDeLaFecha(fecha);
   }
 
   public boolean esDeLaFecha(LocalDate fecha) {
@@ -37,10 +37,6 @@ public class Movimiento {
 
   public boolean isDeposito() {
     return esDeposito;
-  }
-
-  public boolean isExtraccion() {
-    return !esDeposito;
   }
 
   public void agregateA(Cuenta cuenta) {
@@ -61,9 +57,6 @@ public class Movimiento {
   /*
   *La clase en si es un code smell porque esta compuesta casi en si totalidad
   por getters (Only accesors)
-
-  *Este caso de isExtraccion() es un metodo sin ninguna razon de existir, ya que para saber
-  si es un deposito se niega isDeposito() (Codigo repetido)
 
   *Los metodos agregarA(1) y calcularValor() estan cometiendo el error de que basicamente
   estan haciendo algo que no es de su responsabilidad, es un metodo que deberia estar en
