@@ -19,14 +19,6 @@ public class Movimiento {
     return monto;
   }
 
-  public LocalDate getFecha() {
-    return fecha;
-  }
-
-  public boolean fueDepositado(LocalDate fecha) {
-    return isDeposito() && esDeLaFecha(fecha);
-  }
-
   public boolean fueExtraido(LocalDate fecha) {
     return !isDeposito() && esDeLaFecha(fecha);
   }
@@ -41,6 +33,3 @@ public class Movimiento {
 
 }
 
-/*
-* Los metodos fueDepositado() y getFecha() no se usan para nada
-* */
