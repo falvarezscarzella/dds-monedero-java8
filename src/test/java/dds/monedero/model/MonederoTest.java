@@ -89,6 +89,6 @@ public class MonederoTest {
   @Test
   public void MovimientoQuedaRegistradoEnCuenta(){
     cuenta.agregarMovimiento(movimientoPasado);
-    assertFalse(cuenta.getMovimientos().isEmpty());
+    assertTrue(cuenta.getMovimientos().contains(movimientoPasado));
   }
 }
