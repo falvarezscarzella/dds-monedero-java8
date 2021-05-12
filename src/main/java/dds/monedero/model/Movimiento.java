@@ -42,5 +42,5 @@ public class Movimiento {
 }
 
 /*
-* Los metodos fueDepositado() no se usan para nada
+* Los metodos fueDepositado() y getFecha() no se usan para nada
 * */
