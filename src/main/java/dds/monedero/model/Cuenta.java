@@ -59,7 +59,7 @@ public class Cuenta {
 
   public double getMontoExtraidoEn(LocalDate fecha) {
     return getMovimientos().stream()
-        .filter(movimiento -> !movimiento.isDeposito())
+        .filter(movimiento -> movimiento.fueExtraido(fecha))
         .mapToDouble(Movimiento::getMonto)
         .sum();
   }
@@ -105,8 +105,3 @@ public class Cuenta {
     }
   }
 }
-
-
-/*
-*En getMontoExtraidoA(1) se puede simplificar esa logica del filter abstrayendo la funcion booleana (Long Method?)
-*/
