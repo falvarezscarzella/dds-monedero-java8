@@ -10,8 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MonederoTest {
   private Cuenta cuenta;
@@ -82,9 +81,9 @@ public class MonederoTest {
 
   @Test
   public void VerExtraccionDeUnaFecha(){
-    movimientoPasado.agregateA(cuenta);
-    cuenta.sacar(200);
-    assertEquals(200,cuenta.getMontoExtraidoEn(LocalDate.now()));
+    cuenta.setSaldo(1000);
+    cuenta.agregarMovimiento(fechaPasada,300,false);
+    assertEquals(300,cuenta.getMontoExtraidoEn(fechaPasada));
   }
 
 }

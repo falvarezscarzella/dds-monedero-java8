@@ -31,37 +31,16 @@ public class Movimiento {
     return !isDeposito() && esDeLaFecha(fecha);
   }
 
-  public boolean esDeLaFecha(LocalDate fecha) {
-    return this.fecha.equals(fecha);
+  public boolean esDeLaFecha(LocalDate fechaVerificacion) {
+    return fechaVerificacion.equals(fecha);
   }
 
   public boolean isDeposito() {
     return esDeposito;
   }
 
-  public void agregateA(Cuenta cuenta) {
-    cuenta.setSaldo(calcularValor(cuenta));
-    cuenta.agregarMovimiento(fecha, monto, esDeposito);
-  }
-
-
-  public double calcularValor(Cuenta cuenta) {
-    if (esDeposito) {
-      return cuenta.getSaldo() + getMonto();
-    } else {
-      return cuenta.getSaldo() - getMonto();
-    }
-  }
 }
 
-  /*
-  *La clase en si es un code smell porque esta compuesta casi en si totalidad
-  por getters (Only accesors)
-
-  *La clase tambien comete el error de depender demasiado de cuenta, lo cual esta conectado
-  con el Misplaced method, lo cual deriva en un monton de setters y getters que podrian no existir (Feature Envy)
-
-  *Los metodos agregarA(1) y calcularValor() estan cometiendo el error de que basicamente
-  estan haciendo algo que no es de su responsabilidad, es un metodo que deberia estar en
-  el objeto cuenta (Misplaced method)
-   */
+/*
+* Los metodos fueDepositado() y fueExtraido() no se usan para nada
+* */
