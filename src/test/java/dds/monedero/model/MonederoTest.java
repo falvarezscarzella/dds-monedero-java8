@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MonederoTest {
   private Cuenta cuenta;
   private final LocalDate fechaPasada = LocalDate.of(2020,3,16);
-  private final Movimiento movimientoPasado = new Movimiento(fechaPasada,300,true);
+  private final Movimiento movimientoPasado = new Movimiento(fechaPasada,300,false);
 
   @BeforeEach
   public void init() {
@@ -82,13 +82,13 @@ public class MonederoTest {
   @Test
   public void VerExtraccionDeUnaFecha(){
     cuenta.setSaldo(1000);
-    cuenta.agregarMovimiento(fechaPasada,300,false);
+    cuenta.agregarMovimiento(movimientoPasado);
     assertEquals(300,cuenta.getMontoExtraidoEn(fechaPasada));
   }
 
   @Test
   public void MovimientoQuedaRegistradoEnCuenta(){
-    cuenta.agregarMovimiento(fechaPasada,300,true);
+    cuenta.agregarMovimiento(movimientoPasado);
     assertFalse(cuenta.getMovimientos().isEmpty());
   }
 }
