@@ -14,7 +14,7 @@ public class Cuenta {
   private double saldo = 0;
   private List<Movimiento> movimientos = new ArrayList<>();
 
-  public Cuenta(){}
+  public Cuenta(){};
 
   public Cuenta(double montoInicial) {
     saldo = montoInicial;
@@ -94,8 +94,4 @@ sino estaria usando la clase Movimiento unicamente como una estructura
 
 *En el metodo poner(1) y sacar(1) tambien se puede abtraer una parte de la logica de las validaciones
 en un metodo nuevo (Long method?)
-
-*setMovimientos(1) es incongruente pues no actualiza el saldo (Esto no se si es un smell pero si me parece feo)
-
-*El contructor de Cuenta() inicializa el saldo en 0 y el mismo atributo se inicializa tambien en 0, lo cual es redundante
 */

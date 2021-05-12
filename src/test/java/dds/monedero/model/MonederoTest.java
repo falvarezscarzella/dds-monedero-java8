@@ -86,4 +86,9 @@ public class MonederoTest {
     assertEquals(300,cuenta.getMontoExtraidoEn(fechaPasada));
   }
 
+  @Test
+  public void MovimientoQuedaRegistradoEnCuenta(){
+    cuenta.agregarMovimiento(fechaPasada,300,true);
+    assertFalse(cuenta.getMovimientos().isEmpty());
+  }
 }
